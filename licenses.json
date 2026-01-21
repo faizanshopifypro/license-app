@@ -1,0 +1,35 @@
+{
+  "VEL-4843-3851-0957-6527": {
+    "customer": "Albert Brase",
+    "store": "quickstart-b3ac4efc.myshopify.com",
+    "createdAt": "2025-12-10T23:37:39.543Z",
+    "valid": true
+  },
+  "VEL-D220-3921-50D0-0F85": {
+    "customer": "Ahmed Bhatti",
+    "store": "quickstart-b3ac4efc.myshopify.com",
+    "createdAt": "2025-12-10T23:38:59.281Z",
+    "valid": true
+  },
+  "VEL-6894-61B3-322B-5907": {
+    "customer": "Alexa Dickens",
+    "email": "undefined",
+    "store": "unknown-store",
+    "createdAt": "2025-12-10T23:51:55.788Z",
+    "valid": true
+  },
+  "VEL-DCED-A7DA-2284-65A2": {
+    "customer": "Alvin Burleson",
+    "email": "alvinburleson@me.com",
+    "store": "quickstart-b3ac4efc.myshopify.com",
+    "createdAt": "2025-12-10T23:55:30.947Z",
+    "valid": true
+  },
+  "VEL-CC5B-273D-7529-A951": {
+    "customer": "Akiba Herndon",
+    "email": "anise71@gmail.com",
+    "store": "quickstart-b3ac4efc.myshopify.com",
+    "createdAt": "2025-12-12T19:18:05.589Z",
+    "valid": true
+  }
+}
