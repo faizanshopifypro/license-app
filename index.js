@@ -462,7 +462,7 @@ ${Object.entries(licenses).map(([key,lic])=>`
 <td>${lic.customer}</td>
 <td>${lic.email}</td>
 <td>${lic.store}</td>
-<td class="icon-svg">${lic.valid?"✅":"❌"}</td>
+<td class="icon-svg">${lic.valid?"✔️":"❌"}</td>
 <td class="small">${new Date(lic.createdAt).toLocaleString()}</td>
 <td class="button-display">
 <button class="btn copy" onclick="copyKey('${key}')">Copy</button>
@@ -502,6 +502,7 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
