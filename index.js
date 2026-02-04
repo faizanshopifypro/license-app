@@ -216,6 +216,14 @@ app.get("/admin", requireLogin, (req, res) => {
 
 <h2>License Dashboard</h2>
 <a href="/logout">Logout</a>
+<br />
+<h2>License Dashboard</h2>
+
+<input
+  id="search"
+  placeholder="Search by license, email, store..."
+  style="padding:8px;width:300px;margin-bottom:15px"
+/>
 
 <table>
 <tr>
@@ -244,7 +252,20 @@ ${lic.valid?
 function copyKey(k){navigator.clipboard.writeText(k)}
 function revoke(k){fetch("/revoke?key="+k).then(()=>location.reload())}
 function activate(k){fetch("/activate?key="+k).then(()=>location.reload())}
+
+const search = document.getElementById("search");
+
+search.addEventListener("keyup", function () {
+  const value = this.value.toLowerCase();
+  document.querySelectorAll("table tr").forEach((row, i) => {
+    if (i === 0) return;
+    row.style.display = row.innerText.toLowerCase().includes(value)
+      ? ""
+      : "none";
+  });
+});
 </script>
+
 
 </body></html>`;
 
@@ -255,4 +276,5 @@ function activate(k){fetch("/activate?key="+k).then(()=>location.reload())}
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
