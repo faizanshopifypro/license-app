@@ -299,7 +299,6 @@ app.get("/admin", requireLogin, (req, res) => {
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            margin-bottom:40px;
         }
 
         h4 {
@@ -502,7 +501,7 @@ app.get("/admin", requireLogin, (req, res) => {
     </style>
   </head>
   <body>
-        <h2 style="text-align:center;margin:20px 0px;">VERTEX COMMERCE</h2>
+        <h2 style="text-align:center;margin:40px 0px; width:100%;">VERTEX COMMERCE</h2>
 <div class="das-logout">
         <h2>License Dashboard</h2>
         <a href="/logout">Logout</a>
@@ -566,6 +565,7 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
