@@ -25,9 +25,9 @@ app.use(
 );
 
 // ===== ADMIN CREDENTIALS =====
-const ADMIN_USER = "admin";
+const ADMIN_USER = "vertex";
 // CHANGE PASSWORD HERE:
-const ADMIN_PASS_HASH = bcrypt.hashSync("ChangeThisPassword123", 10);
+const ADMIN_PASS_HASH = bcrypt.hashSync("Vertex@2026$", 10);
 
 // ===== LOGIN MIDDLEWARE =====
 function requireLogin(req, res, next) {
@@ -255,3 +255,4 @@ function activate(k){fetch("/activate?key="+k).then(()=>location.reload())}
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
