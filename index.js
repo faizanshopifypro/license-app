@@ -58,12 +58,75 @@ function generateLicenseKey() {
 
 app.get("/login", (req, res) => {
   res.send(`
-  <h2>Owner Login</h2>
-  <form method="POST">
-    <input name="user" placeholder="Username"/><br><br>
-    <input name="pass" type="password" placeholder="Password"/><br><br>
-    <button>Login</button>
-  </form>
+  <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            margin: 30px;
+            background: linear-gradient(135deg, #020617 0%, #020617 40%, #0B1120 65%, #1E3A8A 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: -webkit-fill-available;
+        }
+
+        h2 {
+            color: #F9FAFB;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .login-box {
+            background-color: #111827;
+            border-radius: 8px;
+            padding: 30px;
+            width: 100%;
+            max-width: 250px;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+        }
+
+        button {
+            background-color: white;
+            padding: 6px 12px;
+            margin: 0;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 400;
+            color: #000;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        button:hover {
+            border: 1px solid #1E3A8A;
+            box-shadow: -4px 4px #1E3A8A;
+        }
+    </style>
+ <div class="login-box">
+        <h2>Admin Login</h2>
+        <form method="POST">
+            <input name="user" placeholder="Username"><br><br>
+            <input name="pass" type="password" placeholder="Password"><br><br>
+            <button>Login</button>
+        </form>
+    </div>
   `);
 });
 
@@ -502,6 +565,7 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
