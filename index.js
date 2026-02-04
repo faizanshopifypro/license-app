@@ -502,11 +502,9 @@ app.get("/admin", requireLogin, (req, res) => {
     </style>
   </head>
   <body>
+        <h2 style="text-align:center;margin:20px 0px;">VERTEX COMMERCE</h2>
 <div class="das-logout">
-        <h2>VERTEX COMMERCE</h2>
-    </div>
-<div class="das-logout">
-        <h2 style="text-align:center;margin:20px 0px;">License Dashboard</h2>
+        <h2>License Dashboard</h2>
         <a href="/logout">Logout</a>
     </div>
 <h4>User & License Search</h4>
@@ -568,6 +566,7 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
