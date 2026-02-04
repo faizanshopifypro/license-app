@@ -299,6 +299,10 @@ app.get("/admin", requireLogin, (req, res) => {
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            padding: 5px;
+            background-color: #111827;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         }
 
         h4 {
@@ -565,6 +569,7 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
