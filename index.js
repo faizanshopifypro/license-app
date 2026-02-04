@@ -217,7 +217,7 @@ app.get("/admin", requireLogin, (req, res) => {
 <h2>License Dashboard</h2>
 <a href="/logout">Logout</a>
 <br />
-<h2>License Dashboard</h2>
+<h4>User & License Search</h4>
 
 <input
   id="search"
@@ -276,5 +276,6 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
