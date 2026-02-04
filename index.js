@@ -1,32 +1,33 @@
-import express from "express";
 import session from "express-session";
 import bcrypt from "bcrypt";
+import express from "express";
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import bodyParser from "body-parser";
 
-// ===== CONFIG =====
+// ====== CONFIG ======
 const app = express();
 const PORT = 3000;
 const DATA_FILE = "licenses.json";
 const CSS_FILE = "css/pro-theme.css";
 
-// ===== OWNER LOGIN =====
-const ADMIN_USER = "vertex";
-const ADMIN_PASSWORD = "Vertex@2026$"; // CHANGE THIS
-const ADMIN_PASS_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// ===== SESSION =====
 app.use(
   session({
-    secret: "vertex-super-secret",
+    secret: "vertex-super-secret-change-this",
     resave: false,
     saveUninitialized: false,
   })
 );
+
+// ===== ADMIN CREDENTIALS =====
+const ADMIN_USER = "admin";
+// CHANGE PASSWORD HERE:
+const ADMIN_PASS_HASH = bcrypt.hashSync("ChangeThisPassword123", 10);
 
 // ===== LOGIN MIDDLEWARE =====
 function requireLogin(req, res, next) {
@@ -34,21 +35,22 @@ function requireLogin(req, res, next) {
   res.redirect("/login");
 }
 
-// ===== LOAD LICENSES =====
+// ====== LOAD LICENSES ======
 let licenses = {};
 if (fs.existsSync(DATA_FILE)) {
   licenses = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
 }
 
-// ===== SAVE LICENSES =====
+// ====== SAVE LICENSES ======
 function saveLicenses() {
   fs.writeFileSync(DATA_FILE, JSON.stringify(licenses, null, 2));
 }
 
-// ===== LICENSE GENERATOR =====
+// ====== LICENSE GENERATOR ======
 function generateLicenseKey() {
-  const chunk = () =>
-    crypto.randomBytes(2).toString("hex").toUpperCase();
+  function chunk() {
+    return crypto.randomBytes(2).toString("hex").toUpperCase();
+  }
   return `VEL-${chunk()}-${chunk()}-${chunk()}-${chunk()}`;
 }
 
@@ -68,10 +70,10 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
   const { user, pass } = req.body;
 
-  if (user !== ADMIN_USER) return res.send("Invalid credentials");
+  if (user !== ADMIN_USER) return res.send("Invalid");
 
   const ok = await bcrypt.compare(pass, ADMIN_PASS_HASH);
-  if (!ok) return res.send("Invalid credentials");
+  if (!ok) return res.send("Invalid");
 
   req.session.loggedIn = true;
   res.redirect("/admin");
@@ -82,8 +84,9 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-// ================= SHOPIFY WEBHOOK =================
-
+// =====================================================
+// 1️⃣ SHOPIFY WEBHOOK
+// =====================================================
 app.post("/webhook/orders/fulfilled", (req, res) => {
   try {
     const order = req.body;
@@ -92,87 +95,163 @@ app.post("/webhook/orders/fulfilled", (req, res) => {
       ? `${order.destination.first_name} ${order.destination.last_name}`
       : "unknown";
 
+    const customerEmail = order.email;
+    const storeDomain = order.myshopify_domain || "unknown-store";
+
     const licenseKey = generateLicenseKey();
 
     licenses[licenseKey] = {
       customer: customerName,
-      email: order.email,
-      store: order.myshopify_domain || "unknown-store",
+      email: customerEmail,
+      store: storeDomain,
       createdAt: new Date(),
       valid: true,
     };
 
     saveLicenses();
 
-    res.json({ success: true, licenseKey });
-  } catch (e) {
-    res.status(500).json({ success: false });
+    return res.json({
+      success: true,
+      message: "License created successfully",
+      licenseKey,
+    });
+  } catch (err) {
+    console.error("Webhook error:", err);
+    return res.status(500).json({ success: false });
   }
 });
 
-// ================= VALIDATE LICENSE =================
-
+// =====================================================
+// 2️⃣ VALIDATE LICENSE
+// =====================================================
 app.get("/validate", (req, res) => {
   const { key, store } = req.query;
 
-  const lic = licenses[key];
-  if (!lic || !lic.valid) return res.json({ valid: false });
+  if (!key) return res.status(400).json({ valid: false });
 
-  if (lic.store === "unknown-store" && store) {
-    lic.store = store;
-    saveLicenses();
+  const license = licenses[key];
+  if (!license) return res.status(404).json({ valid: false });
+
+  if (!license.valid) return res.status(403).json({ valid: false });
+
+  if (license.store === "unknown-store") {
+    if (store) {
+      license.store = store;
+      saveLicenses();
+    }
+
+    return res.json({
+      valid: true,
+      firstTime: true,
+      cssUrl: `https://api-vertex.com/theme.css?key=${key}&store=${store}`,
+    });
   }
 
-  if (lic.store !== store && lic.store !== "unknown-store")
-    return res.json({ valid: false });
+  if (license.store !== store) return res.status(403).json({ valid: false });
 
-  res.json({
+  return res.json({
     valid: true,
     cssUrl: `https://api-vertex.com/theme.css?key=${key}&store=${store}`,
+    license,
   });
 });
 
-// ================= CSS =================
-
+// =====================================================
+// 3️⃣ PROTECTED CSS
+// =====================================================
 app.get("/theme.css", (req, res) => {
-  const lic = licenses[req.query.key];
-  if (!lic || !lic.valid) return res.sendStatus(403);
+  const { key, store } = req.query;
+  const license = licenses[key];
+  if (!license || !license.valid) return res.status(403).send("Invalid");
+
+  if (license.store !== "unknown-store" && license.store !== store)
+    return res.status(403).send("Store mismatch");
 
   const cssPath = path.join(process.cwd(), CSS_FILE);
-  res.type("text/css").send(fs.readFileSync(cssPath));
+  res.setHeader("Content-Type", "text/css");
+  res.send(fs.readFileSync(cssPath, "utf8"));
 });
 
-// ================= ADMIN =================
+// =====================================================
+// 🔐 ADMIN ROUTES (PROTECTED)
+// =====================================================
 
 app.get("/licenses", requireLogin, (req, res) => res.json(licenses));
 
 app.get("/revoke", requireLogin, (req, res) => {
-  licenses[req.query.key].valid = false;
+  const { key } = req.query;
+  licenses[key].valid = false;
   saveLicenses();
   res.json({ success: true });
 });
 
 app.get("/activate", requireLogin, (req, res) => {
-  licenses[req.query.key].valid = true;
+  const { key } = req.query;
+  licenses[key].valid = true;
   saveLicenses();
   res.json({ success: true });
 });
 
+// ================= ADMIN DASHBOARD =================
+
 app.get("/admin", requireLogin, (req, res) => {
-  res.send(`
-  <h2>License Dashboard</h2>
-  <a href="/logout">Logout</a>
-  <pre>${JSON.stringify(licenses, null, 2)}</pre>
-  `);
+  const html = `
+  <html>
+  <head>
+    <title>License Dashboard</title>
+    <style>
+      body { font-family: Arial; margin: 30px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+      th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+      th { background: #f4f4f4; }
+      .btn { padding:6px 10px;border:none;border-radius:4px;cursor:pointer;}
+      .revoke{background:#e53935;color:#fff}
+      .activate{background:#43a047;color:#fff}
+      .copy{background:#3949ab;color:#fff}
+      .info{background:#00897b;color:#fff}
+      .small{font-size:13px;opacity:.7}
+    </style>
+  </head>
+  <body>
+
+<h2>License Dashboard</h2>
+<a href="/logout">Logout</a>
+
+<table>
+<tr>
+<th>License</th><th>Customer</th><th>Email</th><th>Store</th><th>Status</th><th>Created</th><th>Actions</th>
+</tr>
+
+${Object.entries(licenses).map(([key,lic])=>`
+<tr>
+<td><b>${key}</b></td>
+<td>${lic.customer}</td>
+<td>${lic.email}</td>
+<td>${lic.store}</td>
+<td>${lic.valid?"✅":"❌"}</td>
+<td class="small">${new Date(lic.createdAt).toLocaleString()}</td>
+<td>
+<button class="btn copy" onclick="copyKey('${key}')">Copy</button>
+${lic.valid?
+`<button class="btn revoke" onclick="revoke('${key}')">Revoke</button>`:
+`<button class="btn activate" onclick="activate('${key}')">Activate</button>`}
+</td>
+</tr>`).join("")}
+
+</table>
+
+<script>
+function copyKey(k){navigator.clipboard.writeText(k)}
+function revoke(k){fetch("/revoke?key="+k).then(()=>location.reload())}
+function activate(k){fetch("/activate?key="+k).then(()=>location.reload())}
+</script>
+
+</body></html>`;
+
+  res.send(html);
 });
 
-// ================= HEALTH =================
+// =====================================================
+app.get("/health", (req, res) => res.json({ status: "ok" }));
 
-app.get("/health", (req, res) => res.json({ ok: true }));
-
-// ================= START =================
-
-app.listen(PORT, () =>
-  console.log("Server running on port " + PORT)
-);
-
+app.listen(PORT, () => console.log("Running"));
