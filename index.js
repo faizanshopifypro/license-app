@@ -13,8 +13,8 @@ const DATA_FILE = "licenses.json";
 const CSS_FILE = "css/pro-theme.css";
 
 // ===== OWNER LOGIN =====
-const ADMIN_USER = "admin";
-const ADMIN_PASSWORD = "ChangeThisPassword123"; // CHANGE THIS
+const ADMIN_USER = "vertex";
+const ADMIN_PASSWORD = "Vertex@2026$"; // CHANGE THIS
 const ADMIN_PASS_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
 
 app.use(bodyParser.json());
@@ -175,3 +175,4 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 app.listen(PORT, () =>
   console.log("Server running on port " + PORT)
 );
+
