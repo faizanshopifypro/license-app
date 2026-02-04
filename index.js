@@ -58,75 +58,12 @@ function generateLicenseKey() {
 
 app.get("/login", (req, res) => {
   res.send(`
-  <style>
-        body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            margin: 30px;
-            background: linear-gradient(135deg, #020617 0%, #020617 40%, #0B1120 65%, #1E3A8A 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: -webkit-fill-available;
-        }
-
-        h2 {
-            color: #F9FAFB;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .login-box {
-            background-color: #111827;
-            border-radius: 8px;
-            padding: 30px;
-            width: 100%;
-            max-width: 250px;
-            text-align: center;
-            overflow: hidden;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        }
-
-        input {
-            width: 100%;
-            border: none;
-            outline: none;
-            padding: 10px 15px;
-            border-radius: 50px;
-        }
-
-        button {
-            background-color: white;
-            padding: 6px 12px;
-            margin: 0;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 400;
-            color: #000;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
-
-        button:hover {
-            border: 1px solid #1E3A8A;
-            box-shadow: -4px 4px #1E3A8A;
-        }
-    </style>
-    <div class="login-box">
-        <h2>Admin Login</h2>
-        <form method="POST">
-            <input name="user" placeholder="Username"><br><br>
-            <input name="pass" type="password" placeholder="Password"><br><br>
-            <button>Login</button>
-        </form>
-    </div>
+  <h2>Owner Login</h2>
+  <form method="POST">
+    <input name="user" placeholder="Username"/><br><br>
+    <input name="pass" type="password" placeholder="Password"/><br><br>
+    <button>Login</button>
+  </form>
   `);
 });
 
@@ -263,253 +200,30 @@ app.get("/admin", requireLogin, (req, res) => {
   <head>
     <title>License Dashboard</title>
     <style>
-        body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            margin: 30px;
-            background: linear-gradient(135deg, #020617 0%, #020617 40%, #0B1120 65%, #1E3A8A 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: self-start;
-            height: -webkit-fill-available;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #111827;
-            border-radius: 8px;
-            overflow: hidden;
-           box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        }
-
-        h2 {
-            color: #F9FAFB;
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .das-logout {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        h4 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #F9FAFB;
-            margin-bottom: 20px;
-            margin-top: 20px;
-        }
-
-        .das-logout a {
-            background-color: white;
-            padding: 10px;
-            margin: 0;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #000;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .das-logout a:hover {
-            border: 1px solid #1E3A8A;
-            box-shadow: -5px 5px #1E3A8A;
-        }
-
-        input#search {
-            border: none;
-            outline: none;
-            padding: 11px !important;
-            border-radius: 5px;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #1F2937;
-            text-align: left;
-        }
-
-        th {
-            background: #202234;
-            color: #CBD5E1;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        td {
-            color: #fff;
-        }
-
-        tr {
-            background-color: #191D2B;
-            font-size: 13px;
-            font-weight: 400;
-            color: #94A3B8;
-        }
-
-        .icon-svg {
-            text-align: center;
-        }
-
-        .icon-svg svg {
-            fill: green;
-            width: 18px;
-            text-align: center;
-            background: #fff;
-            border-radius: 50px;
-            padding: 2px;
-        }
-
-        .btn {
-            padding: 6px 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: opacity 0.2s ease, transform 0.1s ease;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        td.button-display {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .revoke {
-            background: #e53935;
-            color: white;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .revoke:hover {
-            box-shadow: -4px 4px white;
-            border: 1px solid #e53935;
-        }
-
-        .copy {
-            background: #3949ab;
-            color: white;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .copy:hover {
-            box-shadow: -4px 4px white;
-            border: 1px solid #3949ab;
-        }
-
-        .info {
-            background: #00897b;
-            color: white;
-        }
-
-        .small {
-            font-size: 13px;
-            opacity: 0.7;
-            color: #fff;
-        }
-
-        /* Tablets (768px to 1024px) */
-        @media screen and (max-width: 1024px) {
-            body {
-                margin: 20px;
-            }
-
-            input#search {
-                width: 100%;
-                max-width: 400px;
-            }
-
-            table {
-                font-size: 13px;
-            }
-
-            h2 {
-                font-size: 24px;
-            }
-
-            h4 {
-                font-size: 18px;
-            }
-
-
-            td.button-display {
-                flex-direction: column;
-                gap: 6px;
-            }
-        }
-
-        /* Mobile (up to 767px) */
-        @media screen and (max-width: 767px) {
-            body {
-                margin: 15px;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            h4 {
-                font-size: 16px;
-            }
-
-            input#search {
-                width: 100%;
-                padding: 10px;
-                font-size: 13px;
-            }
-
-            table {
-                display: block;
-                overflow-x: auto;
-                font-size: 12px;
-                width: 100%;
-            }
-
-            th,
-            td {
-                padding: 10px;
-            }
-
-            td.button-display {
-                flex-direction: column;
-                gap: 6px;
-            }
-
-            .das-logout {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-        }
+      body { font-family: Arial; margin: 30px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+      th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+      th { background: #f4f4f4; }
+      .btn { padding:6px 10px;border:none;border-radius:4px;cursor:pointer;}
+      .revoke{background:#e53935;color:#fff}
+      .activate{background:#43a047;color:#fff}
+      .copy{background:#3949ab;color:#fff}
+      .info{background:#00897b;color:#fff}
+      .small{font-size:13px;opacity:.7}
     </style>
   </head>
   <body>
 
- <div class="das-logout">
-        <h2>License Dashboard</h2>
-        <a href="/logout">Logout</a>
-    </div>
-    <h4>User &amp; License Search</h4>
+<h2>License Dashboard</h2>
+<a href="/logout">Logout</a>
+<br />
+<h4>User & License Search</h4>
 
-    <input id="search" placeholder="Search by license, email, store..."
-        style="padding:8px;width:300px;margin-bottom:15px">
+<input
+  id="search"
+  placeholder="Search by license, email, store..."
+  style="padding:8px;width:300px;margin-bottom:15px"
+/>
 
 <table>
 <tr>
@@ -522,13 +236,9 @@ ${Object.entries(licenses).map(([key,lic])=>`
 <td>${lic.customer}</td>
 <td>${lic.email}</td>
 <td>${lic.store}</td>
-<td class="icon-svg">${lic.valid?" <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 640 640"><!--!Font Awesome Pro v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2026 Fonticons, Inc.-->
-                        <path
-                            d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z" />
-                    </svg>":"❌"}</td>
+<td>${lic.valid?"✅":"❌"}</td>
 <td class="small">${new Date(lic.createdAt).toLocaleString()}</td>
-<td class="button-display">
+<td>
 <button class="btn copy" onclick="copyKey('${key}')">Copy</button>
 ${lic.valid?
 `<button class="btn revoke" onclick="revoke('${key}')">Revoke</button>`:
@@ -566,7 +276,5 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
-
-
 
 
