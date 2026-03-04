@@ -5,7 +5,6 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import bodyParser from "body-parser";
-import cors from "cors";
 
 // ====== CONFIG ======
 const app = express();
@@ -17,36 +16,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // ===== SESSION =====
-// ===== DYNAMIC CORS =====
 app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (Postman, server-to-server)
-      if (!origin) return callback(null, true);
-
-      // Allow any Shopify store
-      if (
-        origin.includes(".myshopify.com") ||
-        origin.includes("shopify.com")
-      ) {
-        return callback(null, true);
-      }
-
-      // Allow your own API domain
-      if (origin.includes("api-vertex.com")) {
-        return callback(null, true);
-      }
-
-      // Otherwise block
-      return callback(new Error("Not allowed by CORS"));
-    },
-    methods: ["GET", "POST"],
-    credentials: false,
+  session({
+    secret: "vertex-super-secret-change-this",
+    resave: false,
+    saveUninitialized: false,
   })
 );
-
-// Handle preflight manually (important)
-app.options("*", cors());
 
 // ===== ADMIN CREDENTIALS =====
 const ADMIN_USER = "vertex";
@@ -593,8 +569,6 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
-
-
 
 
 
