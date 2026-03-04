@@ -614,7 +614,7 @@ const transporter = nodemailer.createTransport({
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
   try {
     await transporter.sendMail({
-      from: '"Vertex Team" <yourgmail@gmail.com>',
+      from: '"Vertex Team" <sharptech846@gmail.com>',
       to: toEmail,
       subject: "Your Vertex License & Theme File",
       html: `
@@ -642,6 +642,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
