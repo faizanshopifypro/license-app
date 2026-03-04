@@ -7,7 +7,7 @@ import path from "path";
 import bodyParser from "body-parser";
 import cors from "cors";
 import nodemailer from "nodemailer";
-import { fileURLToPath } from "url";
+
 
 // ====== CONFIG ======
 const app = express();
@@ -649,6 +649,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
