@@ -9,6 +9,8 @@ import cors from "cors";
 // ====== CONFIG ======
 const app = express();
 const PORT = 3000;
+const nodemailer = require("nodemailer");
+const path = require("path");
 const DATA_FILE = "licenses.json";
 const CSS_FILE = "css/pro-theme.css";
 // ===== DYNAMIC CORS =====
@@ -205,6 +207,7 @@ app.post("/webhook/orders-paid", (req, res) => {
     saveLicenses();
 
     console.log("License generated for order:", order.name);
+    await sendLicenseEmail(customerEmail, customerName, licenseKey);
 
     return res.status(200).json({
       success: true,
@@ -598,11 +601,45 @@ search.addEventListener("keyup", function () {
 
   res.send(html);
 });
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "yourgmail@gmail.com",
+    pass: "your-app-password", // NOT your real password
+  },
+});
+const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
+  try {
+    await transporter.sendMail({
+      from: '"Vertex Team" <yourgmail@gmail.com>',
+      to: toEmail,
+      subject: "Your Vertex License & Theme File",
+      html: `
+        <h2>Hello ${customerName},</h2>
+        <p>Thank you for your purchase 🎉</p>
+        <p><strong>Your License Key:</strong></p>
+        <h3>${licenseKey}</h3>
+        <p>Theme file is attached below.</p>
+        <p>Regards,<br>Vertex Team</p>
+      `,
+      attachments: [
+        {
+          filename: "vertex-theme.zip",
+          path: path.join(__dirname, "theme/vertex-theme.zip"), 
+        },
+      ],
+    });
 
+    console.log("License email sent successfully");
+  } catch (error) {
+    console.error("Email error:", error);
+  }
+};
 // =====================================================
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
