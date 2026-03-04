@@ -618,8 +618,6 @@ transporter.verify((error, success) => {
 });
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
   try {
-     const themePath = path.join(process.cwd(), "theme", "vertex-theme.zip");
-    console.log("Theme path:", themePath);
     await transporter.sendMail({
       from: '"Vertex Team" <sharptech846@gmail.com>',
       to: toEmail,
@@ -635,7 +633,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
       attachments: [
         {
           filename: "vertex-theme.zip",
-          path: themePath,
+          path: path.resolve("theme/vertex-theme.zip"),
         },
       ],
     });
@@ -649,6 +647,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
