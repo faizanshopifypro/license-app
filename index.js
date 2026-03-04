@@ -603,8 +603,8 @@ search.addEventListener("keyup", function () {
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "yourgmail@gmail.com",
-    pass: "your-app-password", // NOT your real password
+    user: "sharptech846@gmail.com",
+    pass: "Bc@200407266", // NOT your real password
   },
 });
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
@@ -638,6 +638,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
