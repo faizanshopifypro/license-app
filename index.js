@@ -164,7 +164,7 @@ app.get("/login", (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { user, pass } = req.body;
-await sendLicenseEmail("faizikwl846@gmail.com", "Faizan", "TEST-1234");
+
   if (user !== ADMIN_USER) return res.send("Invalid");
 
   const ok = await bcrypt.compare(pass, ADMIN_PASS_HASH);
@@ -647,6 +647,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
