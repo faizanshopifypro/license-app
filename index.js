@@ -6,11 +6,10 @@ import fs from "fs";
 import path from "path";
 import bodyParser from "body-parser";
 import cors from "cors";
+import nodemailer from "nodemailer";
 // ====== CONFIG ======
 const app = express();
 const PORT = 3000;
-const nodemailer = require("nodemailer");
-const path = require("path");
 const DATA_FILE = "licenses.json";
 const CSS_FILE = "css/pro-theme.css";
 // ===== DYNAMIC CORS =====
@@ -181,7 +180,7 @@ app.get("/logout", (req, res) => {
 // =====================================================
 // 1️⃣ SHOPIFY WEBHOOK
 // =====================================================
-app.post("/webhook/orders-paid", (req, res) => {
+app.post("/webhook/orders-paid", async (req, res) => {
   try {
     const order = req.body;
 
@@ -639,6 +638,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
