@@ -17,6 +17,7 @@ const PORT = 3000;
 const DATA_FILE = "licenses.json";
 const CSS_FILE = "css/pro-theme.css";
 // ===== DYNAMIC CORS =====
+console.log("__dirname:", __dirname);
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -649,6 +650,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
