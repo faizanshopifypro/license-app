@@ -179,15 +179,15 @@ app.get("/logout", (req, res) => {
 // =====================================================
 // 1️⃣ SHOPIFY WEBHOOK
 // =====================================================
-app.post("/webhook/orders/fulfilled", (req, res) => {
+app.post("/webhook/orders-paid", (req, res) => {
   try {
     const order = req.body;
 
-    const customerName = order.destination
-      ? `${order.destination.first_name} ${order.destination.last_name}`
+    const customerName = order.customer
+      ? `${order.customer.first_name || ""} ${order.customer.last_name || ""}`.trim()
       : "unknown";
 
-    const customerEmail = order.email;
+    const customerEmail = order.email || (order.customer && order.customer.email);
     const storeDomain = order.myshopify_domain || "unknown-store";
 
     const licenseKey = generateLicenseKey();
@@ -196,17 +196,22 @@ app.post("/webhook/orders/fulfilled", (req, res) => {
       customer: customerName,
       email: customerEmail,
       store: storeDomain,
+      orderId: order.id,
+      orderName: order.name,
       createdAt: new Date(),
       valid: true,
     };
 
     saveLicenses();
 
-    return res.json({
+    console.log("License generated for order:", order.name);
+
+    return res.status(200).json({
       success: true,
       message: "License created successfully",
       licenseKey,
     });
+
   } catch (err) {
     console.error("Webhook error:", err);
     return res.status(500).json({ success: false });
@@ -598,6 +603,7 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
