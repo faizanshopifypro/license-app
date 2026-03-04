@@ -9,8 +9,6 @@ import cors from "cors";
 import nodemailer from "nodemailer";
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 // ====== CONFIG ======
 const app = express();
 const PORT = 3000;
@@ -620,7 +618,7 @@ transporter.verify((error, success) => {
 });
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
   try {
-     const themePath = path.resolve("theme/vertex-theme.zip");
+     const themePath = path.join(process.cwd(), "theme", "vertex-theme.zip");
     console.log("Theme path:", themePath);
     await transporter.sendMail({
       from: '"Vertex Team" <sharptech846@gmail.com>',
@@ -651,6 +649,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
