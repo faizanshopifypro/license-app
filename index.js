@@ -611,6 +611,13 @@ const transporter = nodemailer.createTransport({
     pass: "jxawfqphvfgdrvro", // NOT your real password
   },
 });
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("SMTP Connection Error:", error);
+  } else {
+    console.log("Email server ready");
+  }
+});
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
   try {
     await transporter.sendMail({
@@ -642,6 +649,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
