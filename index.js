@@ -9,13 +9,6 @@ import bodyParser from "body-parser";
 // ====== CONFIG ======
 const app = express();
 const PORT = 3000;
-app.use(
-  cors({
-    origin: "*", // allow all Shopify stores
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
 const DATA_FILE = "licenses.json";
 const CSS_FILE = "css/pro-theme.css";
 
@@ -576,6 +569,7 @@ search.addEventListener("keyup", function () {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
