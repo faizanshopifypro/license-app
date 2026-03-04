@@ -604,7 +604,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "sharptech846@gmail.com",
-    pass: "Bc@200407266", // NOT your real password
+    pass: "jxawfqphvfgdrvro", // NOT your real password
   },
 });
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
@@ -638,6 +638,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
