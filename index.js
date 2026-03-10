@@ -619,16 +619,73 @@ transporter.verify((error, success) => {
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
   try {
     await transporter.sendMail({
-      from: '"Vertex Team" <sharptech846@gmail.com>',
+      from: '"Vertex Commerce" <sharptech846@gmail.com>',
       to: toEmail,
-      subject: "Your Vertex License & Theme File",
+      subject: "Your Vertex Commerce License & Theme File",
       html: `
-        <h2>Hello ${customerName},</h2>
-        <p>Thank you for your purchase 🎉</p>
-        <p><strong>Your License Key:</strong></p>
-        <h3>${licenseKey}</h3>
-        <p>Theme file is attached below.</p>
-        <p>Regards,<br>Vertex Team</p>
+      <div style="font-family:Arial,Helvetica,sans-serif;background:#f4f6fb;padding:40px 20px;">
+        
+        <div style="max-width:620px;margin:auto;background:#ffffff;border-radius:10px;padding:30px;border:1px solid #e6e8f0;">
+          
+          <div style="text-align:center;margin-bottom:25px;">
+            <h2 style="margin:0;color:#4f46e5;">Vertex Commerce</h2>
+            <p style="margin:5px 0 0;color:#6b7280;font-size:14px;">Premium Shopify Themes</p>
+          </div>
+
+          <p style="font-size:16px;color:#111;">
+            Hello <strong>${customerName}</strong>,
+          </p>
+
+          <p style="color:#444;line-height:1.6;">
+            Thank you for purchasing a <strong>Vertex Commerce Theme</strong> 🎉  
+            Your license has been generated successfully.
+          </p>
+
+          <div style="background:#f8fafc;border:1px dashed #d1d5db;padding:18px;text-align:center;margin:25px 0;border-radius:8px;">
+            <p style="margin:0;color:#6b7280;font-size:13px;">Your License Key</p>
+            <h2 style="margin:6px 0;color:#111;letter-spacing:2px;">${licenseKey}</h2>
+          </div>
+
+          <p style="color:#444;">
+            The theme file is attached to this email.  
+            Download it and upload it to your Shopify store.
+          </p>
+
+          <div style="background:#f1f5ff;border-left:4px solid #4f46e5;padding:16px;margin:25px 0;">
+            <p style="margin:0 0 8px 0;font-weight:bold;color:#111;">
+              Join our Discord Community
+            </p>
+
+            <p style="margin:0;color:#444;font-size:14px;">
+              Join our Discord server here:  
+              <a href="https://discord.gg/dK6PCzNJhg" style="color:#4f46e5;">
+              https://discord.gg/dK6PCzNJhg
+              </a>
+            </p>
+
+            <p style="margin:8px 0 0 0;color:#444;font-size:14px;">
+              Once you join, go to the <strong>#verify</strong> section and enter your 
+              <strong>license key</strong> to get full access.
+            </p>
+          </div>
+
+          <p style="color:#444;">
+            If you need any help installing or customizing the theme, feel free to reach out.
+          </p>
+
+          <p style="margin-top:30px;color:#111;">
+            Best regards,<br>
+            <strong>Vertex Commerce Team</strong>
+          </p>
+
+          <hr style="margin:25px 0;border:none;border-top:1px solid #eee;">
+
+          <p style="font-size:12px;color:#9ca3af;text-align:center;">
+            © Vertex Commerce — Premium Shopify Themes
+          </p>
+
+        </div>
+      </div>
       `,
       attachments: [
         {
@@ -639,6 +696,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
     });
 
     console.log("License email sent successfully");
+
   } catch (error) {
     console.error("Email error:", error);
   }
@@ -647,6 +705,7 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
+
 
 
 
