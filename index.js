@@ -292,13 +292,7 @@ app.get("/activate", requireLogin, (req, res) => {
   saveLicenses();
   res.json({ success: true });
 });
-app.get("/delete", requireLogin, (req, res) => {
-  const { key } = req.query;
-  if (!licenses[key]) return res.status(404).json({ success: false });
-  delete licenses[key];
-  saveLicenses();
-  res.json({ success: true });
-});
+
 // ================= ADMIN DASHBOARD =================
 
 app.get("/admin", requireLogin, (req, res) => {
@@ -546,17 +540,6 @@ app.get("/admin", requireLogin, (req, res) => {
                 gap: 8px;
             }
         }
-        .delete {
-    background: #7f1d1d;
-    color: white;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.delete:hover {
-    box-shadow: -4px 4px white;
-    border: 1px solid #7f1d1d;
-}
     </style>
   </head>
   <body>
@@ -590,8 +573,7 @@ ${Object.entries(licenses).map(([key,lic])=>`
 <button class="btn copy" onclick="copyKey('${key}')">Copy</button>
 ${lic.valid?
 `<button class="btn revoke" onclick="revoke('${key}')">Revoke</button>`:
-`<button class="btn activate" onclick="activate('${key}')">Activate</button>` :
-`<button class="btn delete" onclick="deleteKey('${key}')">Delete</button>`}
+`<button class="btn activate" onclick="activate('${key}')">Activate</button>`}
 </td>
 </tr>`).join("")}
 
@@ -601,11 +583,6 @@ ${lic.valid?
 function copyKey(k){navigator.clipboard.writeText(k)}
 function revoke(k){fetch("/revoke?key="+k).then(()=>location.reload())}
 function activate(k){fetch("/activate?key="+k).then(()=>location.reload())}
-function deleteKey(k){
-  if(confirm("Are you sure you want to permanently delete this license?")) {
-    fetch("/delete?key="+k).then(()=>location.reload())
-  }
-}
 
 const search = document.getElementById("search");
 
@@ -728,7 +705,6 @@ const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => console.log("Running"));
-
 
 
 
