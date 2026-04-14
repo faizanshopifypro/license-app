@@ -590,8 +590,8 @@ ${Object.entries(licenses).map(([key,lic])=>`
 <button class="btn copy" onclick="copyKey('${key}')">Copy</button>
 ${lic.valid?
 `<button class="btn revoke" onclick="revoke('${key}')">Revoke</button>`:
-`<button class="btn activate" onclick="activate('${key}')">Activate</button>`}
-<button class="btn delete" onclick="deleteKey('${key}')">Delete</button>
+`<button class="btn activate" onclick="activate('${key}')">Activate</button>` :
+`<button class="btn delete" onclick="deleteKey('${key}')">Delete</button>`}
 </td>
 </tr>`).join("")}
 
