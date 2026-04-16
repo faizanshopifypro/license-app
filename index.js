@@ -626,10 +626,12 @@ search.addEventListener("keyup", function () {
   res.send(html);
 });
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.zoho.eu",
+  port: 465,
+  secure: true,
   auth: {
-    user: "sharptech846@gmail.com",
-    pass: "jxawfqphvfgdrvro", // NOT your real password
+    user: "support@vertexthemes.com",
+    pass: "LLcSe6pW2ZJH",
   },
 });
 transporter.verify((error, success) => {
@@ -642,7 +644,7 @@ transporter.verify((error, success) => {
 const sendLicenseEmail = async (toEmail, customerName, licenseKey) => {
   try {
     await transporter.sendMail({
-      from: '"Vertex Commerce" <sharptech846@gmail.com>',
+      from: '"Vertex Commerce" <support@vertexthemes.com>',
       to: toEmail,
       subject: "Your Vertex Commerce License & Theme File",
       html: `
