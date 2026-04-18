@@ -14,23 +14,7 @@ const PORT = 3000;
 const DATA_FILE = "licenses.json";
 
 // ===== DYNAMIC CORS =====
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (origin.includes(".myshopify.com") || origin.includes("shopify.com")) {
-        return callback(null, true);
-      }
-      if (origin.includes("api-vertex.com")) {
-        return callback(null, true);
-      }
-      return callback(new Error("Not allowed by CORS"));
-    },
-    methods: ["GET", "POST"],
-    credentials: false,
-  })
-);
-
+app.use(cors());
 app.options("*", cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
